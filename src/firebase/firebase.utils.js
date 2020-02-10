@@ -12,6 +12,31 @@ const config = {
   appId: "1:482054725854:web:d82e6450a68badea07624f"
 };
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  //We first need to make sure that we're getting back a valid object :
+  if(!userAuth) return; //if userAuth doesn't exist, we want to return from the function and go no further
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+  const snapShot = await userRef.get();
+  // The Firestore library gives one out of two potention object : QueryReference or QuerySnapshot
+  if (!snapShot.exists){
+    const {displayName, email} = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData
+      })
+    } catch (error){
+      console.log('error creating user', error)
+    }
+  }
+  return userRef; 
+}
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
