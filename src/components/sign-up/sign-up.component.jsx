@@ -34,7 +34,11 @@ class SignUp extends React.Component{
         email: '',
         password: '',
         confirmPassword:''
-      })
+      });
+      document.querySelectorAll('input').forEach(cur=>{
+        cur.removeAttribute('required');
+      });
+ 
     } catch (error){
       console.log(error);
     }
