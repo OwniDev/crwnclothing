@@ -1,10 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
+import  {createStructuredSelector} from 'reselect';
 
 import {auth} from '../../firebase/firebase.utils';
 import CartIcon from './../cart-icon/cart-icon.component';
 import CartDropdown from './../cart-dropdown/cart-dropdown.component';
+import { selectCartHidden} from '../../redux/cart/cart.selectors'
+import { selectCurrentUser} from '../../redux/user/user.selectors'
+
+
 
 import {ReactComponent as Logo} from '../../assets/crown.svg'
 
@@ -37,9 +42,9 @@ const Header = ( {currentUser, hidden} ) => (
 
 )
 //The things we make available into this component :
-const mapStateToProps = ({user : {currentUser}, cart: {hidden}}) => ({ //Destructuring nested values
-  currentUser,
-  hidden // We want the user value which will give us our user reducer and from there we want the current user value
+const mapStateToProps = createStructuredSelector({ //Destructuring nested values
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden // We want the user value which will give us our user reducer and from there we want the current user value
 })
 // that const name is the industry standard
 
